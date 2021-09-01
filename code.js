@@ -93,3 +93,143 @@ console.assert(
     newJoin(array2) === array2.join(),
     "newJoin does not work properly if operator is missing"
 )
+
+//Intermediate
+
+
+//Callback Functions
+function isEven(number) {
+    if (number % 2 === 0) {
+        return true
+    }
+    return false
+}
+
+function greaterThanTen(number) {
+    if (number > 10) {
+        return true
+    }
+    return false
+}
+
+function isSnake(animal) {
+    if (animal === "snake") {
+        return true
+    }
+    return false
+}
+
+function isChicken(animal) {
+    if (animal === "chicken") {
+        return true
+    }
+    return false
+}
+
+function newSome(array, callback) {
+    for (let i = 0; i < array.length; i++) {
+        if (callback(array[i])) {
+            displayToPage(true)
+            return true
+        }
+    }
+    displayToPage(false)
+    return false
+}
+
+console.assert(
+    newSome(array1, isEven) === true,
+    "newSome does not return true when an array of numbers fulfills the condition"
+)
+
+console.assert(
+    newSome(array1, greaterThanTen) === false,
+    "newSome does not return false when an array of numbers does not fulfill the condition"
+)
+
+console.assert(
+    newSome(array2, isSnake) === true,
+    "newSome does not return true when an array of strings fulfills the condition"
+)
+
+console.assert(
+    newSome(array2, isChicken) === false,
+    "newSome does not return true when an array of string does not fulfill the condition"
+)
+
+function newFindIndex(array, callback) {
+    for (let i = 0; i < array.length; i++) {
+        if (callback(array[i])) {
+            displayToPage(i)
+            return i
+        }
+    }
+    displayToPage(-1)
+    return -1
+}
+
+console.assert(
+    newFindIndex(array1, isEven) === 1,
+    "newFindIndex does not return correct index of array of numbers"
+)
+
+console.assert(
+    newFindIndex(array1, greaterThanTen) === -1,
+    "newFindIndex does not return -1 with array of numbers"
+)
+
+console.assert(
+    newFindIndex(array2, isSnake) === 3,
+    "newFindIndex does not return correct index with array of strings"
+)
+
+console.assert(
+    newFindIndex(array2, isChicken) === -1,
+    "newFindIndex does not return -1 with array of strings"
+)
+
+//callback function
+
+function addByTwo(element) {
+    return element + 2
+}
+
+function newMap(array, callback) {
+    let newArray = []
+    for (let i = 0; i < array.length; i++) {
+        newArray.push(callback(array[i]))
+    }
+    displayToPage(newArray)
+    return newArray
+}
+
+console.assert(
+    JSON.stringify(newMap(array1, addByTwo)) === JSON.stringify([3, 4, 5, 6, 7]),
+    "newMap does not return correct array"
+)
+
+console.assert(
+    JSON.stringify(newMap(array2, addByTwo)) === JSON.stringify(["dog2", "cat2", "bird2", "snake2", "turtle2"]),
+    "newMap does not return correct array"
+)
+
+function newFilter(array, callback) {
+    let newArray = []
+    for (let i = 0; i < array.length; i++) {
+        if (callback(array[i])) {
+            newArray.push(array[i])
+        }
+    }
+    displayToPage(newArray)
+    return newArray
+}
+
+console.assert(
+    JSON.stringify(newFilter(array1, isEven)) === JSON.stringify([2, 4]),
+    "newFilter does not return correct array with array of numbers"
+)
+
+console.assert(
+    JSON.stringify(newFilter(array2, isSnake)) === JSON.stringify(["snake"]),
+    "newFilter does not return correct array with array of string"
+)
