@@ -233,3 +233,84 @@ console.assert(
     JSON.stringify(newFilter(array2, isSnake)) === JSON.stringify(["snake"]),
     "newFilter does not return correct array with array of string"
 )
+
+//Advanced
+
+let array3 = [1, 2, [3, 4, 5]]
+
+let array4 = [[[[6, 7]]], 8, 9, 10]
+
+function newFlat(array, number) {
+    let newArray = []
+    let reducer
+    if (number === undefined || isNaN(number)) {
+        reducer = 1
+    } else {
+        reducer = number
+    }
+    for (let i = 0; i < array.length; i++) {
+        if (Array.isArray(array[i]) === true && reducer > 0) {
+            let reducedArray = newFlat(array[i], reducer - 1)
+            newArray = newConcat(newArray, reducedArray)
+        } else {
+            newArray.push(array[i])
+        }
+    }
+    return newArray
+}
+
+console.assert(
+    JSON.stringify(newFlat(array3)) === JSON.stringify(array3.flat()),
+    "newFlat does not return a correct value when reducer is 1"
+)
+
+console.assert(
+    JSON.stringify(newFlat(array4, 2)) === JSON.stringify(array4.flat(2)),
+    "newFlat does not return a correct value when reducer is 2"
+)
+
+console.assert(
+    JSON.stringify(newFlat(array4, 3)) === JSON.stringify(array4.flat(3)),
+    "newFlat does not return a correct value when reducer is 3"
+)
+
+
+const reducer1 = (accumulator, number) => accumulator + number
+
+function reducer2(accumulator, number){
+    accumulator.push(number * 2)
+    return accumulator
+}
+
+
+function newReduce(array, callback, initial) {
+    let start
+    let i = 0
+    if (initial !== undefined) {
+        start = initial
+    } else {
+        start = array[0]
+        i = i + 1
+    }
+    let previousValue = start
+    while (i < array.length) {
+        previousValue = callback(previousValue, array[i])
+        i = i + 1
+    }
+    return previousValue
+}
+
+console.assert(
+    newReduce(array1, reducer1) === 15,
+    "newReduce does not work properly with addition reducer"
+)
+
+console.assert(
+    newReduce(array1, reducer1, 20) === 35,
+    "newReduce does not work properly with addition reducer and initial value"
+)
+
+console.assert(
+    JSON.stringify(newReduce(array1, reducer2, [])) === JSON.stringify([2, 4, 6, 8, 10]),
+    "newReduce does not work properly with addition reducer and initial value"
+)
