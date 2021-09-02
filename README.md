@@ -12,4 +12,4 @@ _(Instructions for how to install the unit testing framework and run the unit te
 
 For a software developer, what are the benefits of good unit tests? Are there any drawbacks to writing unit tests?
 
-_(Put your reflection answer here.)_
+The main benefit of unit tests are to make sure that the functions that you created actually return the intended values. They can help to find potential bugs or mistakes that the developer may have missed. The main drawback to writing unit tests are that the developer may not think of every potential outcome. The function may pass every unit test that the developer initially considered, but it may not work for other inputs that the developer didn't think about.
