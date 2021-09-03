@@ -1,11 +1,5 @@
 // Your Code Here.
 
-function displayToPage(x) {
-    let element = document.createElement("p")
-    element.innerText = x
-    document.body.append(element)
-}
-
 
 //Basic
 
@@ -13,20 +7,28 @@ let array1 = [1, 2, 3, 4, 5]
 
 let array2 = ["dog", "cat", "bird", "snake", "turtle"]
 
-function newIncludes(array, x) {
-    for (let i = 0; i < array.length; i++) {
+
+function newIncludes(array, x, index) {
+    let start = 0
+    if (index !== undefined) {
+        start = index
+    }
+    for (let i = start; i < array.length; i++) {
         if (array[i] === x) {
-            displayToPage(true)
             return true
         }
     }
-    displayToPage(false)
     return false
 }
 
 console.assert(
     newIncludes(array1, 3) === true,
     "newIncludes does not return true with an array of numbers"
+)
+
+console.assert(
+    newIncludes(array1, 0, 1) === false,
+    "newIncludes does not return false with an array of numbers and optional index"
 )
 
 console.assert(
@@ -44,20 +46,41 @@ console.assert(
     "newIncludes does not return false with an array of strings"
 )
 
-function newConcat(arrayA, arrayB) {
+function newConcat(arrayA, arrayB, ...arrayC) { //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters
     let newArray = []
-    for (let i = 0; i < arrayA.length; i++) {
-        newArray.push(arrayA[i])
+    if (Array.isArray(arrayA)) {
+        for (let i = 0; i < arrayA.length; i++) {
+            newArray.push(arrayA[i])
+        }
+    } else {
+        newArray.push(arrayA)
     }
-    for (let j = 0; j < arrayB.length; j++) {
-        newArray.push(arrayB[j])
+    if (Array.isArray(arrayB)) {
+        for (let j = 0; j < arrayB.length; j++) {
+            newArray.push(arrayB[j])
+        }
+    } else {
+        newArray.push(arrayB)
     }
-    displayToPage(newArray)
+    for (let k = 0; k < arrayC.length; k++) {
+        if (Array.isArray(arrayC[k])) {
+            for (let l = 0; l < arrayC[k].length; l++) {
+                newArray.push(arrayC[k][l])
+            }
+        } else {
+            newArray.push(arrayC[k])
+        }
+    }
     return newArray
 }
 
 console.assert(
     JSON.stringify(newConcat(array1, array2)) === JSON.stringify([1, 2, 3, 4, 5, "dog", "cat", "bird", "snake", "turtle"]),
+    "newConcat does not work properly with an array of numbers and array of strings"
+)
+
+console.assert(
+    JSON.stringify(newConcat(2, 3)) === JSON.stringify([2, 3]),
     "newConcat does not work properly with an array of numbers and array of strings"
 )
 
@@ -80,7 +103,6 @@ function newJoin(array, operator) {
         }
         result = result + array[i]
     }
-    displayToPage(result)
     return result
 }
 
@@ -128,12 +150,10 @@ function isChicken(animal) {
 
 function newSome(array, callback) {
     for (let i = 0; i < array.length; i++) {
-        if (callback(array[i])) {
-            displayToPage(true)
+        if (callback(array[i], i, array)) {
             return true
         }
     }
-    displayToPage(false)
     return false
 }
 
@@ -159,12 +179,10 @@ console.assert(
 
 function newFindIndex(array, callback) {
     for (let i = 0; i < array.length; i++) {
-        if (callback(array[i])) {
-            displayToPage(i)
+        if (callback(array[i], i, array)) {
             return i
         }
     }
-    displayToPage(-1)
     return -1
 }
 
@@ -197,9 +215,8 @@ function addByTwo(element) {
 function newMap(array, callback) {
     let newArray = []
     for (let i = 0; i < array.length; i++) {
-        newArray.push(callback(array[i]))
+        newArray.push(callback(array[i], i, array))
     }
-    displayToPage(newArray)
     return newArray
 }
 
@@ -216,11 +233,10 @@ console.assert(
 function newFilter(array, callback) {
     let newArray = []
     for (let i = 0; i < array.length; i++) {
-        if (callback(array[i])) {
+        if (callback(array[i], i, array)) {
             newArray.push(array[i])
         }
     }
-    displayToPage(newArray)
     return newArray
 }
 
